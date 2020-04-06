@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="span9">
+            <ul class="breadcrumb">
+                <li><a href="{% url "catalogs:index" %}">Home</a> <span class="divider">/</span></li>
+                <li class="active">Registration</li>
+            </ul>
+            <h3> Registration</h3>
+            <hr class="soft"/>
+            <div class="well">
+                <form class="form-horizontal" method="post" action="{% url "accounts:customer_register" %}">
+                    <h3>Your Account Details</h3>
+                    <div class="control-group">
+
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="control-group">
+                                <label for="{{ field.auto_id }}" class="control-label">{{ field.label }}</label>
+                                <div class="controls">{{ field }} </div>
+                                {{ field.erros }}
+                            </div>
+                        {% endfor %}
+
+                        {% for field in CustomerUserForm %}
+                            <div class="control-group">
+                                <label for="{{ field.auto_id }}" class="control-label">{{ field.label }}</label>
+                                <div class="controls">{{ field }} </div>
+                                {{ field.erros }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" name="submitAccount" value="Register" class="exclusive shopBtn">
+                                    Register
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

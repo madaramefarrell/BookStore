@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Item info{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="span12">
+            <ul class="breadcrumb">
+                <li><a href="{% url "catalogs:index" %}">首頁</a> <span class="divider">/</span></li>
+                <li class="active">{{ book.title }}</li>
+            </ul>
+            <div class="well well-small">
+                <div class="row-fluid">
+                    <div class="span5">
+                        <div id="myCarousel" class="carousel slide cntr">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="{{ book.image.url }}" alt="" style="width:100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span7">
+                        <h3>{{ book.title }} [NT${{ book.price }}]</h3>
+                        <hr class="soft"/>
+                        <h4>商品資訊</h4>
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr class="techSpecRow">
+                                <td class="techSpecTD1">作者</td>
+                                <td class="techSpecTD2">{{ book.author }}</td>
+                            </tr>
+                            <tr class="techSpecRow">
+                                <td class="techSpecTD1">ISBN</td>
+                                <td class="techSpecTD2">{{ book.isbn }}</td>
+                            </tr>
+                            <tr class="techSpecRow">
+                                <td class="techSpecTD1">出版商</td>
+                                <td class="techSpecTD2">{{ book.publisher }}</td>
+                            </tr>
+                            <tr class="techSpecRow">
+                                <td class="techSpecTD1">譯者</td>
+                                <td class="techSpecTD2">{{ book.translator }}</td>
+                            </tr>
+                            <tr class="techSpecRow">
+                                <td class="techSpecTD1">出版日期</td>
+                                <td class="techSpecTD2">{{ book.publication_date }}</td>
+                            </tr>
+                            <tr class="techSpecRow">
+                                <td class="techSpecTD1">價格</td>
+                                <td class="techSpecTD2">NT$ {{ book.price }}</td>
+                            </tr>
+                            <tr class="techSpecRow">
+                                <td class="techSpecTD1">庫存</td>
+                                {% if book.stock == 0 %}
+                                    <td class="techSpecTD2">0</td>
+                                {% else %}
+                                    <td class="techSpecTD2">{{ book.stock }} 本</td>
+                                {% endif %}
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr class="soft"/>
+                        <form method="post" class="form-horizontal qtyFrm" action="{% url "shoppingCars:add_item" book.id %}">
+                            {% if book.stock == 0 %}
+                                <div class="control-group">
+                                    <label class="control-label"><h1 class="display-1">缺貨中</h1></label>
+                                </div>
+                            {% else %}
+                                <div class="control-group">
+                                    <label class="control-label"><span>購買數量</span></label>
+                                    <div class="controls">
+                                        {% csrf_token %}
+                                        <input type="number" name="number" min="0" max="{{ book.stock }}" class="span6" id="{{ form.number.auto_id }}"
+                                               placeholder="Qty.">
+                                    </div>
+                                </div>
+                                <h4>{{ book.stock }} items in stock</h4>
+                                <button type="submit" class="shopBtn">
+                                    <span class=" icon-shopping-cart"></span>
+                                    加到購物車
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+                <hr class="softn clr"/>
+                <ul id="productDetail" class="nav nav-tabs">
+                    <li class="active"><a href="#home" data-toggle="tab">商品描述</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content tabWrapper">
+                    <div class="tab-pane fade active in" id="home">
+                        {{ book.description }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- Body wrapper -->
+{% endblock %}

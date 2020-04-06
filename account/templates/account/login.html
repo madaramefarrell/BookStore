@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <div class="row">
+
+        <div class="span4"> &nbsp;</div>
+        <div class="span4">
+            <div class="well">
+                <h5>ALREADY REGISTERED ?</h5>
+                <form method="post" action=".">
+
+                    {% csrf_token %}
+
+                    {{ form }}
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="defaultBtn">Sign in</button>
+                            <a href="{% url "accounts:forget_password" %}">Forget password?</a>
+                        </div>
+                        <br>
+                        <a href="{% url "social:begin" "github" %}">Login with Github</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <ul class="thumbnails">
+        {% for book in books %}
+            <li class="span3">
+                <div class="thumbnail">
+                    <a href="{{ book.get_absolute_url }}" class="overlay"></a>
+                    <a class="zoomTool" href="{{ book.get_absolute_url }}" title="add to cart"><span
+                            class="icon-search"></span>
+                        QUICK VIEW</a>
+                    <a href="{{ book.get_absolute_url }}"><img src="{{ book.image.url }}" alt=""></a>
+                    <div class="caption cntr">
+                        <p>{{ book.title|truncatechars:25 }}</p>
+                        <p><strong>NT$ {{ book.price }}</strong></p>
+                        {% if book.stock == 0 %}
+                            <h4><div class="shopBtn"> 缺貨 </div></h4>
+                        {% else %}
+                            <h4><a class="shopBtn" href="{% url "shoppingCars:add_item" book.id %}" title="add to cart">
+                                Add to cart </a></h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

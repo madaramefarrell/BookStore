@@ -1,0 +1,39 @@
+{% extends "orders/base.html" %}
+{% load bootstrap3 %}
+{% block title %}
+    Checkout
+{% endblock %}
+
+{% block content %}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Your order</div>
+        <div class="panel-body">
+            <ul class="list-group">
+                {% for item in cart %}
+                    {% if item.number == 0 %}
+                    {% else %}
+                        <li class="list-group-item">
+                            ${{ item.get_cost }}
+                            <span class="badge">{{ item.item.title }} x{{ item.number }}</span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <p>Total: ${{ total }}</p>
+
+        </div>
+    </div>
+
+    <h1>Checkout</h1>
+    <form action="." method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-success btn-product">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Place order
+            </button>
+        {% endbuttons %}
+    </form>
+
+{% endblock %}

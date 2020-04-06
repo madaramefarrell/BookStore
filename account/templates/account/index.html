@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h1>This is home page</h1>
+    {% if username %}
+        {% if user.is_authenticated %}
+            <h2>Hi! {{ username }}</h2>
+            {% if user.email %}
+                <h3>Your email is {{ user.email }}</h3>
+            {% endif %}
+        {% else %}
+            <h2>You are {{ username }}</h2>
+        {% endif %}
+    {% else %}
+        <h3>Logout success!</h3>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Change personal info{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="post" action="{% url "accounts:change_personal_info" %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                    {{ field.label_tag }}{{ field }}
+                    {{ field.erros }}
+                    </div>
+                {% endfor %}
+                {% for field in CustomerUserForm %}
+                <div class="form-group">
+                    {{ field.label_tag }}{{ field }}
+                    {{ field.erros }}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success">
+                    Sign up
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

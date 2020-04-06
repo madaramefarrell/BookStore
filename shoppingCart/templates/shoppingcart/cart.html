@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Shopping list{% endblock %}
+{% block content %}
+    <div class="row">
+    <div class="span12">
+    <ul class="breadcrumb">
+        <li><a href="{% url "catalogs:index" %}">首頁</a> <span class="divider">/</span></li>
+        <li class="active">購物清單</li>
+    </ul>
+    <div class="well well-small">
+    <h1>購物清單 <small class="pull-right"> {{ item_count }} 本書在購物車裡 </small></h1>
+    <hr class="soften"/>
+
+    <table class="table table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th>名稱名稱</th>
+            <th>單價</th>
+            <th>庫存</th>
+            <th>數量</th>
+            <th>小計</th>
+            <th>取消購買</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for item in items %}
+            <tr>
+                <td><img width="100" src="{{ item.item.image.url }}" alt=""></td>
+                <td>NT$ {{ item.item.price }}</td>
+                {% if item.item.stock == 0 %}
+                    <td>
+                        <span class="label label-danger">缺貨中</span>
+                    </td>
+                    <td>
+                        <span class="label label-danger">暫時不提供購買</span>
+                    </td>
+                    <td>
+                        <span class="label label-danger">NT$ 0</span>
+                    </td>
+                {% else %}
+                    <td>
+                        {{ item.item.stock }}
+                    </td>
+                    <td>
+                        <form method="post" action="{% url "shoppingCars:add_item" item.item_id %}">
+                            {% csrf_token %}
+                            <input type="number" name="number" class="span1" value size="16" style="max-width:34px"
+                                   min="0" max="{{ item.item.stock }}" id="{{ form.number.auto_id }}" placeholder="{{ item.number }}">
+                            <button class="btn btn-primary btn-small" type="submit">更新購物車</button>
+                        </form>
+                    </td>
+                    <td>NT$ {% widthratio item.item.price 1 item.number %}</td>
+                {% endif %}
+                <td>
+                    <a href="{% url "shoppingCars:remove_item" item.item_id %}" class="btn btn-mini btn-danger"><span
+                            class="icon-remove"></span></a>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4" class="alignR"><h2>總金額：</h2></td>
+            <td class="label label-success"><h2>NT$ {{ total }}</h2></td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <a href="{% url "catalogs:index" %} " class="shopBtn btn-large">
+        <span class="icon-arrow-left">
+            繼續購物
+        </span>
+    </a>
+    <a href="{% url "orders:order_create" %} " class="shopBtn btn-large pull-right">
+        <span class="icon-arrow-right">
+            結帳
+        </span>
+    </a>
+{% endblock %}
