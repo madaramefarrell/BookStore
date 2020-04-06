@@ -12,10 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import django_heroku
 import os
 
-import dotenv
-
-PROJECT_PATH = os.path.dirname(os.path.dirname(__file__))
-dotenv.load_dotenv(os.path.join(PROJECT_PATH, ".env"))
 
 
 LOGIN_REDIRECT_URL = '/'
