@@ -7,7 +7,6 @@ import dotenv
 
 def main():
     dotenv.read_dotenv()
-    #dotenv.read_dotenv('./BookStore/.env')
 
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BookStore.settings')
     try:
