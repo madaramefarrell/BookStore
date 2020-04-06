@@ -9,8 +9,14 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+import django_heroku
 import os
+
+import dotenv
+
+PROJECT_PATH = os.path.dirname(os.path.dirname(__file__))
+dotenv.load_dotenv(os.path.join(PROJECT_PATH, ".env"))
+
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/account/login'
@@ -50,7 +56,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -156,3 +162,5 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+django_heroku.settings(locals())
