@@ -16,8 +16,6 @@ class CustomerUser(models.Model):
         db_index=True
     )
 
-    def __str__(self):
-        return self.user.username
 
     """
     def save(self, *args, **kwargs):

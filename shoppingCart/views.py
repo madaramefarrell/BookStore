@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from catalog.models import Book
 from django.shortcuts import redirect
 from .forms import CartAddForm
-from django.views.decorators.http import require_POST
 from django.http import Http404
 from django.shortcuts import get_object_or_404, get_list_or_404
 
@@ -14,7 +13,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 def cart(request):
     form = CartAddForm()
 
-    items = get_list_or_404(Cart, belong_to=request.user)
+    items = Cart.objects.filter(belong_to=request.user)
     item_count = 0
     total = 0
 

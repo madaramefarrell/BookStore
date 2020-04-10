@@ -4,6 +4,7 @@ from account.models import Market
 from shoppingCart.models import Cart
 from django.shortcuts import get_object_or_404, get_list_or_404
 from shoppingCart.forms import CartAddForm
+from django.contrib.auth import authenticate
 
 
 def index(request):
@@ -11,14 +12,17 @@ def index(request):
 
     item_count = 0
     total = 0
-    items = Cart.objects.filter(belong_to=request.user)
+    items = None
 
-    for item in items:
-        if item.number > item.item.stock:
-            item.number = item.item.stock
-            item.save()
-        item_count = item_count + item.number
-        total = total + item.get_cost()
+    if request.user.is_authenticated:
+        items = Cart.objects.filter(belong_to=request.user)
+
+        for item in items:
+            if item.number > item.item.stock:
+                item.number = item.item.stock
+                item.save()
+            item_count = item_count + item.number
+            total = total + item.get_cost()
 
     form = CartAddForm()
     context = {

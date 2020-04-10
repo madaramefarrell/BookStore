@@ -10,17 +10,19 @@ from .task import forgetPassword
 
 def customer_register(request):
     books = get_list_or_404(Book)
-    items = Cart.objects.filter(belong_to=request.user)
 
     total = 0
     item_count = 0
+    items = None
 
-    for item in items:
-        if item.number > item.item.stock:
-            item.number = item.item.stock
-            item.save()
-        item_count = item_count + item.number
-        total = total + item.get_cost()
+    if request.user.is_authenticated:
+        items = Cart.objects.filter(belong_to=request.user)
+        for item in items:
+            if item.number > item.item.stock:
+                item.number = item.item.stock
+                item.save()
+            item_count = item_count + item.number
+            total = total + item.get_cost()
 
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
