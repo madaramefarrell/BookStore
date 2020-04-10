@@ -46,7 +46,8 @@
                         <form method="post" action="{% url "shoppingCars:add_item" item.item_id %}">
                             {% csrf_token %}
                             <input type="number" name="number" class="span1" value size="16" style="max-width:34px"
-                                   min="0" max="{{ item.item.stock }}" id="{{ form.number.auto_id }}" placeholder="{{ item.number }}">
+                                   min="0" max="{{ item.item.stock }}" id="{{ form.number.auto_id }}"
+                                   placeholder="{{ item.number }}">
                             <button class="btn btn-primary btn-small" type="submit">更新購物車</button>
                         </form>
                     </td>
