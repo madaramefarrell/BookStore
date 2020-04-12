@@ -44,14 +44,17 @@ def book_detail(request, id):
 
     total = 0
     item_count = 0
-    items = Cart.objects.filter(belong_to=request.user)
+    items = None
 
-    for item in items:
-        if item.number > item.item.stock:
-            item.number = item.item.stock
-            item.save()
-        item_count = item_count + item.number
-        total = total + item.get_cost()
+    if request.user.is_authenticated:
+        items = Cart.objects.filter(belong_to=request.user)
+
+        for item in items:
+            if item.number > item.item.stock:
+                item.number = item.item.stock
+                item.save()
+            item_count = item_count + item.number
+            total = total + item.get_cost()
 
     context = {
         'username': request.user.username,
@@ -68,7 +71,9 @@ def book_detail(request, id):
 def market_list(request, market):
     total = 0
     item_count = 0
-    items = Cart.objects.filter(belong_to=request.user)
+
+    if request.user.is_authenticated:
+        items = Cart.objects.filter(belong_to=request.user)
 
     for item in items:
         if item.number > item.item.stock:
@@ -88,3 +93,27 @@ def market_list(request, market):
         'market': market
     }
     return render(request, 'catalog/index.html', context)
+
+
+def contact(request):
+    total = 0
+    item_count = 0
+    items = None
+
+    if request.user.is_authenticated:
+        items = Cart.objects.filter(belong_to=request.user)
+
+        for item in items:
+            if item.number > item.item.stock:
+                item.number = item.item.stock
+                item.save()
+            item_count = item_count + item.number
+            total = total + item.get_cost()
+
+    context = {
+        'username': request.user.username,
+        'item': items,
+        'item_count': item_count,
+        'total': total,
+    }
+    return render(request, 'catalog/contact.html', context)

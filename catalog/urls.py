@@ -11,4 +11,7 @@ urlpatterns = [
     path('market/<str:market>',
          views.market_list,
          name='market'),
+    path('contact',
+         views.contact,
+         name='contact'),
 ]

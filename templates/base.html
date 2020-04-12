@@ -32,7 +32,7 @@
                 {% if not request.user.is_authenticated %}
                     <a href="{% url "accounts:customer_register" %}"><span class="icon-edit"></span> Free Register </a>
                 {% endif %}
-                <a href="contact.html"><span class="icon-envelope"></span> Contact us</a>
+                <a href="{% url "catalogs:contact" %}"><span class="icon-envelope"></span> Contact us</a>
                 {% if not request.user.is_authenticated %}
                     <a href="{% url "accounts:customer_login" %}"><span class="icon-shopping-cart"></span>
                         0 Item(s)
