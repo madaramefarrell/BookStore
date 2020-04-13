@@ -1,26 +1,45 @@
 {% extends "base.html" %}
 {% block title %}Change personal info{% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <form method="post" action="{% url "accounts:change_personal_info" %}">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                    {{ field.label_tag }}{{ field }}
-                    {{ field.erros }}
+   <div class="row">
+        <div class="span9">
+            <ul class="breadcrumb">
+                <li><a href="{% url "catalogs:index" %}">Home</a> <span class="divider">/</span></li>
+                <li class="active">Change your personal information</li>
+            </ul>
+            <hr class="soft"/>
+            <div class="well">
+                <form class="form-horizontal" method="post" action="{% url "accounts:change_personal_info" %}">
+                    <h3>Your Account Details</h3>
+                    <div class="control-group">
+
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="control-group">
+                                <label for="{{ field.auto_id }}" class="control-label">{{ field.label }}</label>
+                                <div class="controls">{{ field }} </div>
+                                {{ field.erros }}
+                            </div>
+                        {% endfor %}
+
+                        {% for field in CustomerUserForm %}
+                            <div class="control-group">
+                                <label for="{{ field.auto_id }}" class="control-label">{{ field.label }}</label>
+                                <div class="controls">{{ field }} </div>
+                                {{ field.erros }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" name="submitAccount" value="Register" class="exclusive shopBtn">
+                                    Register
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                {% endfor %}
-                {% for field in CustomerUserForm %}
-                <div class="form-group">
-                    {{ field.label_tag }}{{ field }}
-                    {{ field.erros }}
-                </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-success">
-                    Sign up
-                </button>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

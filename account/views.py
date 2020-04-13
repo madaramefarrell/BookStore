@@ -9,7 +9,6 @@ from .task import forgetPassword
 
 
 def customer_register(request):
-    books = get_list_or_404(Book)
 
     total = 0
     item_count = 0
@@ -49,7 +48,6 @@ def customer_register(request):
                'CustomerUserForm': customerform,
                'url': request.path,
                'username': request.user.username,
-               'books': books,
                'items': items,
                'item_count': item_count,
                'total': total
@@ -86,6 +84,20 @@ def vendor_register(request):
 
 @login_required()
 def ChangePersonalInfo(request):
+
+    item_count = 0
+    items = None
+    total = 0
+
+    if request.user.is_authenticated:
+        items = Cart.objects.filter(belong_to=request.user)
+        for item in items:
+            if item.number > item.item.stock:
+                item.number = item.item.stock
+                item.save()
+            item_count = item_count + item.number
+            total = total + item.get_cost()
+
     if request.method == 'POST':
         form = ChangePersonalInfo(request.POST)
         customerform = CustomerUserForm(request.POST)
@@ -104,10 +116,15 @@ def ChangePersonalInfo(request):
         form = MyUserCreationForm()
         customerform = CustomerUserForm()
 
-    context = {
-        'form': form,
-        'CustomerUserForm': customerform
-    }
+    context = {'form': form,
+               'CustomerUserForm': customerform,
+               'url': request.path,
+               'username': request.user.username,
+               'items': items,
+               'item_count': item_count,
+               'total': total
+               }
+
     return render(request, 'account/change_personal_info.html', context)
 
 
@@ -117,13 +134,9 @@ def forget_password(request):
     if request.method == "POST":
         form = forgetPasswordForm(request.POST)
         if form.is_valid():
-            user = User.objects.filter(email=form.cleaned_data.get('email')).first()
-            print(form.cleaned_data.get('email'))
-            print(user)
-            if user:
-                res = forgetPassword(email=user.email, name=user.username)
-            else:
-                error = 'This Email doesn\'t register'
+            #user = User.objects.filter(email=form.cleaned_data.get('email')).first()
+            res = forgetPassword(email=form.cleaned_data['email'], name='user')
+            #error = 'This Email doesn\'t register'
     else:
         form = forgetPasswordForm()
 

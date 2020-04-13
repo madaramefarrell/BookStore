@@ -4,7 +4,7 @@ from .models import Order
 from BookStore.settings import EMAIL_HOST_USER
 
 
-def order_created(order_id):
+def order_created(order_id, email):
     """
     Task to send an e-mail notification when an order is
     successfully created.
@@ -17,5 +17,5 @@ def order_created(order_id):
     mail_sent = send_mail(subject,
                           message,
                           EMAIL_HOST_USER,
-                          [order.order.user.email])
+                          [email])
     return mail_sent

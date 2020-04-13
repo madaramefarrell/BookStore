@@ -12,7 +12,8 @@ def forgetPassword(email, name):
     """
 
     subject = 'Password Change from BookStore'
-    message = 'Dear {},\n\nYou have successfully placed an order.'.format(name)
+    message = 'Dear {}\n\n' \
+              'You got the forget password mail'.format(name)
     mail_sent = send_mail(subject,
                           message,
                           EMAIL_HOST_USER,

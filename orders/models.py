@@ -5,12 +5,12 @@ from account.models import CustomerUser
 
 
 class Order(models.Model):
-
     order = models.ForeignKey(CustomerUser,
                               related_name='historyList',
                               on_delete=models.CASCADE,
                               )
     name = models.CharField(max_length=50)
+    email = models.EmailField(blank=False, null=True)
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)

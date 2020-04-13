@@ -24,15 +24,16 @@ def order_create(request):
                                          quantity=item.number)
             # clear the cart
             cart.delete()
-            order_created(order.id)
+            order_created(order.id, form.cleaned_data['email'])
             request.session['order_id'] = order.id
             # redirect to the payment
             return redirect('payment:process')
 
     else:
         initial = {
+            'name': cart.first().belong_to.first_name
         }
-        form = OrderCreateForm()
+        form = OrderCreateForm(initial=initial)
 
     total = 0
     item_count = 0
