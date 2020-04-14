@@ -1,12 +1,12 @@
 from django.shortcuts import render, reverse
 from django.contrib.auth.decorators import login_required
 from shoppingCart.models import Cart
-from django.contrib.auth.models import User
 from catalog.models import Book
 from django.shortcuts import redirect
 from .forms import CartAddForm
 from django.http import Http404
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import authenticate
 
 
 @login_required()
@@ -54,6 +54,10 @@ def add_item_to_cart(request, item_id):
 
     if request.method == "POST":
         form = CartAddForm(request.POST)
+
+        if request.user.is_anonymous:
+            return redirect('accounts:customer_login')
+
         if form.is_valid():
             item = get_object_or_404(Book, id=item_id)
             cart = get_object_or_404(Cart, belong_to=request.user, item=item)
