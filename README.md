@@ -8,4 +8,6 @@ Django 的練習作品，一個販賣書籍的購物車網站。
 
 網站上線至 Heroku，使用 Heroku Postgres 當作後端資料庫。上線後使用 dotenv 讀取 .env 裡的敏感資訊，避免資料外洩。
 
+PayPal 付款部分功能參考 https://github.com/twtrubiks/django-shop-tutorial
+
 [Demo](https://shielded-sierra-95814.herokuapp.com)
