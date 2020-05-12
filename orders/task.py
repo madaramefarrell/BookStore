@@ -11,9 +11,7 @@ def order_created(order_id, email):
     """
     order = Order.objects.get(id=order_id)
     subject = 'Order number {}'.format(order.id)
-    message = 'Dear {},\n\nYou have successfully placed an order.\
-                Your order id is {}.'.format(order.name,
-                                             order.id)
+    message = 'Dear {},\n\nYou have successfully placed an order.'.format(order.name)
     mail_sent = send_mail(subject,
                           message,
                           EMAIL_HOST_USER,

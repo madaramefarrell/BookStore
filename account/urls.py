@@ -13,9 +13,7 @@ urlpatterns = [
             template_name='account/login.html'
         ), name='customer_login'),
     path(
-        'logout/', auth_views.LogoutView.as_view(
-            template_name='account/index.html'
-        ), name='logout'),
+        'logout/', views.logout, name='logout'),
     path(
         'ChangePersonalInfo/', views.ChangePersonalInfo, name='change_personal_info'
     ),

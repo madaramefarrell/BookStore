@@ -62,6 +62,9 @@ def add_item_to_cart(request, item_id):
             item = get_object_or_404(Book, id=item_id)
             cart = get_object_or_404(Cart, belong_to=request.user, item=item)
 
+            if form.cleaned_data['number'] is None:
+                form.cleaned_data['number'] = 1
+
             if item.stock < form.cleaned_data['number']:
                 error = "{} 庫存不足".format(item.title)
                 return redirect('shoppingCars:cart')

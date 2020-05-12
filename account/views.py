@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib import auth
 from .forms import MyUserCreationForm, CustomerUserForm, VendorUserForm, forgetPasswordForm
 from shoppingCart.models import Cart
 from catalog.models import Book
-from django.contrib.auth.models import User
 from .task import forgetPassword
+from shoppingCart.forms import CartAddForm
 
 
 def customer_register(request):
-
     total = 0
     item_count = 0
     items = None
@@ -84,7 +84,6 @@ def vendor_register(request):
 
 @login_required()
 def ChangePersonalInfo(request):
-
     item_count = 0
     items = None
     total = 0
@@ -134,12 +133,44 @@ def forget_password(request):
     if request.method == "POST":
         form = forgetPasswordForm(request.POST)
         if form.is_valid():
-            #user = User.objects.filter(email=form.cleaned_data.get('email')).first()
+            # user = User.objects.filter(email=form.cleaned_data.get('email')).first()
             res = forgetPassword(email=form.cleaned_data['email'], name='user')
-            #error = 'This Email doesn\'t register'
+            # error = 'This Email doesn\'t register'
     else:
         form = forgetPasswordForm()
 
     context = {'form': form, 'error': error, 'res': res}
 
     return render(request, 'account/forget_password.html', context)
+
+
+def logout(request):
+    auth.logout(request)
+    books = get_list_or_404(Book)
+
+    item_count = 0
+    total = 0
+    items = None
+
+    if request.user.is_authenticated:
+        items = Cart.objects.filter(belong_to=request.user)
+
+        for item in items:
+            if item.number > item.item.stock:
+                item.number = item.item.stock
+                item.save()
+            item_count = item_count + item.number
+            total = total + item.get_cost()
+
+    form = CartAddForm()
+    context = {
+        'url': request.path_info,
+        'form': form,
+        'username': request.user.username,
+        'books': books,
+        'items': items,
+        'item_count': item_count,
+        'total': total
+    }
+
+    return render(request, 'catalog/index.html', context)
