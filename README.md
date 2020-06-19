@@ -13,6 +13,9 @@ PayPal 付款部分功能參考 https://github.com/twtrubiks/django-shop-tutoria
 [Demo](https://shielded-sierra-95814.herokuapp.com)
 
 
+* 測試帳號 user
+* 測試密碼 defaultpasswd
+
 * 左上角登入帳號。
 
 ![](./img/1.png)
